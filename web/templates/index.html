@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Search Movies{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>🎬 Movie Search</h1>
+    <p class="subtitle">Search thousands of movies from multiple sources</p>
+</div>
+
+<div class="search-container">
+    <form action="{{ url_for('search') }}" method="get" class="search-form">
+        <div class="search-box">
+            <input 
+                type="text" 
+                name="q" 
+                placeholder="Search movies by title, plot, cast, or director..." 
+                class="search-input"
+                autofocus
+            >
+            <button type="submit" class="search-button">
+                🔍 Search
+            </button>
+        </div>
+        
+        <div class="advanced-search">
+            <details>
+                <summary>Advanced Filters</summary>
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label>Genres</label>
+                        <div class="checkbox-group">
+                            {% for genre_item in genres[:15] %}
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="genres" value="{{ genre_item.value }}">
+                                {{ genre_item.value }} ({{ genre_item.count }})
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Year Range</label>
+                        <div class="range-inputs">
+                            <input type="number" name="year_min" placeholder="Min (e.g., 2000)" min="1900" max="2024">
+                            <span>to</span>
+                            <input type="number" name="year_max" placeholder="Max (e.g., 2024)" min="1900" max="2024">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Minimum Rating</label>
+                        <select name="rating_min">
+                            <option value="">Any rating</option>
+                            <option value="7.0">7.0+ (Good)</option>
+                            <option value="8.0">8.0+ (Great)</option>
+                            <option value="9.0">9.0+ (Masterpiece)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Sort By</label>
+                        <select name="sort">
+                            <option value="">Relevance</option>
+                            <option value="rating desc">Rating (High to Low)</option>
+                            <option value="rating asc">Rating (Low to High)</option>
+                            <option value="year desc">Year (Newest First)</option>
+                            <option value="year asc">Year (Oldest First)</option>
+                        </select>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </form>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <h3>📊 Faceted Search</h3>
+        <p>Filter by genre, year, and rating to find exactly what you're looking for.</p>
+    </div>
+    <div class="feature-card">
+        <h3>🔍 Smart Search</h3>
+        <p>Search across titles, plots, reviews, cast, and directors with relevance ranking.</p>
+    </div>
+    <div class="feature-card">
+        <h3>🎯 Similar Movies</h3>
+        <p>Discover movies similar to ones you like based on plot, genre, and cast.</p>
+    </div>
+</div>
+
+<div class="quick-searches">
+    <h2>Popular Searches</h2>
+    <div class="tag-cloud">
+        <a href="{{ url_for('search', q='action thriller') }}" class="tag">Action Thriller</a>
+        <a href="{{ url_for('search', q='science fiction') }}" class="tag">Science Fiction</a>
+        <a href="{{ url_for('search', q='comedy') }}" class="tag">Comedy</a>
+        <a href="{{ url_for('search', q='drama') }}" class="tag">Drama</a>
+        <a href="{{ url_for('search', q='christopher nolan') }}" class="tag">Christopher Nolan</a>
+        <a href="{{ url_for('search', q='superhero') }}" class="tag">Superhero</a>
+        <a href="{{ url_for('search', genres='Animation') }}" class="tag">Animation</a>
+        <a href="{{ url_for('search', rating_min='8.0') }}" class="tag">High Rated</a>
+    </div>
+</div>
+{% endblock %}
